@@ -9,10 +9,11 @@
  Project : 3D Tic Tac Toe
  
  3D Tic-Tac-Toe, also known as Qubic or 4x4x4 Tic-Tac-Toe, is a three-dimensional variation of the classic Tic-Tac-Toe game. 
- The game is played on a 4x4x4 cubic grid, creating a total of 64 individual cells. 
+ The game is played on a 4x4x4x4 quadra grid, creating a total of 64 individual cells. 
  The objective is similar to traditional Tic-Tac-Toe: players strive to align four of their markers in a row in any 
  direction—horizontally, vertically, or diagonally.
  */
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,9 +21,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.net.URL;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+
 
 public class App extends JFrame implements ActionListener 
 {
@@ -45,6 +46,7 @@ public class App extends JFrame implements ActionListener
     char AI_Pawn = 'O';
     private char setup[][][];
     private XOButton[][][] gameGrid;
+
 
     private class XOButton extends JButton 
     {
@@ -102,11 +104,13 @@ public class App extends JFrame implements ActionListener
 
     }
 
+
     public class ActionStep {
         int grid;
         int row;
         int column;
     }
+
 
     public App() {
         super("3D Tic-Tac-Toe!");
@@ -118,7 +122,6 @@ public class App extends JFrame implements ActionListener
         setVisible(false);
     }
 
-	
 
     public static void main(String[] args) throws Exception {
         CountDownLatch latch = new CountDownLatch(0);
@@ -133,6 +136,7 @@ public class App extends JFrame implements ActionListener
         });
         latch.await();
     }
+
 
 	public class RoundedButton extends JButton {
 		private int cornerRadius = 25; // Adjust the roundness
@@ -164,6 +168,7 @@ public class App extends JFrame implements ActionListener
 		}
 	}
 
+    
     private void showWelcomeScreen() 
     {
         JFrame welcomeFrame = new JFrame("3D - Tic Tac Toe");
@@ -281,6 +286,8 @@ public class App extends JFrame implements ActionListener
 			}
 		}
 	}
+
+
     private void createBoard() 
     {
         // Refactored setup board code...
@@ -352,7 +359,7 @@ public class App extends JFrame implements ActionListener
         head0.setBounds(180, 0, 250, 40);
         head0.setForeground(Color.white);
 
-        //edited for heading
+        //for heading
         head = new JLabel("3D Tic-Tac-Toe Game");
 		head.setFont(new Font("Roboto", Font.BOLD, 20));
         head.setBounds(180, 0, 250, 40);
@@ -369,7 +376,7 @@ public class App extends JFrame implements ActionListener
         victoryLabel.setVisible(false); // Initially hidden
         victoryLabel.setBounds(350, 260, 200, 200);
         
-		//Variables that determine the locations of the XOButtons as they are placed within loops
+		//Variables that shows balls where they placed within loops
 		int rowTransition = 25;
 		int initialRow = 89;
 		int x_axis = 77;
@@ -377,7 +384,7 @@ public class App extends JFrame implements ActionListener
 		int width = 50;
 		int height = 40;
 
-		//Variables to keep track of the current button being placed
+		//Variables to keep track where being placed
 		int boardNumber = 0;
 		int rowIndex = 0;
 		int colIndex = 0;
@@ -386,8 +393,6 @@ public class App extends JFrame implements ActionListener
 		for (int i = 0; i <= 3; i++){
 			for (int j = 0; j <= 3; j++){
 				for(int k = 0; k <= 3; k++){
-
-					//Creating the new button, setting it to be empty in both arrays
 					setup[i][j][k] = '-';
 					gameGrid[i][j][k] = new XOButton();
 					gameGrid[i][j][k].setFont(new Font("Roboto Bold", Font.ITALIC, 20));
@@ -442,28 +447,9 @@ public class App extends JFrame implements ActionListener
     }
 
 
-    private void showVictoryGIF() {
-        URL gifURL = App.class.getResource("/resources/congrats.gif");
-
-        if (gifURL == null) {
-            System.out.println("GIF resource not found");
-            return;
-        }
-
-    ImageIcon originalIcon = new ImageIcon(gifURL);
-
-    // Resize the image
-    Image originalImage = originalIcon.getImage();
-    Image resizedImage = originalImage.getScaledInstance(150, 150, Image.SCALE_DEFAULT); // Adjust width and height as needed
-    ImageIcon resizedIcon = new ImageIcon(resizedImage);
-
-        victoryLabel.setIcon(resizedIcon);
-        victoryLabel.setVisible(true);
-    }
-
     private void initiateFirstMoveIfNeeded() {
         if (!playerTurn) {
-            // Check if the CPU should play first and if so, make its move
+
             if (difficulty == 3) { // 3 represents INSANE difficulty
                 AI_game();
             } else {
@@ -490,6 +476,7 @@ public class App extends JFrame implements ActionListener
                 
             }
         });
+
 
         head2 = new JLabel("3D - Tic Tac Toe");
         head2.setFont(new Font("Roboto", Font.BOLD, 20));
@@ -592,7 +579,7 @@ public class App extends JFrame implements ActionListener
             if(e.getSource() == newGameButton) {
                 App.this.dispose(); // Dispose the current game window
     
-                // Create a new instance of FinalDraft and show the difficulty selection window
+                // Create a new instance of app the difficulty selection window
                 SwingUtilities.invokeLater(() -> {
                     App newGame = new App();
                     newGame.showDifficultySelection();
@@ -701,7 +688,6 @@ public class App extends JFrame implements ActionListener
 
         if(confirmVictory(playerPawn, newMove))
         {
-            showVictoryGIF();
             head0.setText("You beat me!");
             head0.setBounds(350, 70, 150, 40);
             head0.setForeground(Color.RED);
@@ -716,20 +702,10 @@ public class App extends JFrame implements ActionListener
         }
     }
 
-    // private void resetBoard() 
-    // {
-    //     // Refactored reset board code...
-    //     clearBoard();
-    //     head0.setText("");
-    //     playerScore = 0;
-    //     AI_Score = 0;
-    //     score.setText("You: 0"  + "   Computer: 0");
-    //     repaint();
-    // }
 
     private int Predict(char c, int a, int b) 
     {
-        // Refactored look ahead code...
+        // Refactored code...
         int sample_value1 = a;
         int sample_value2 = b;
         if(playLevelCounter <= playLevel)
@@ -882,6 +858,8 @@ public class App extends JFrame implements ActionListener
         
         return false;
 	}
+
+
     private int evaluateAvailability(char c)
     {
         int victory_count = 0;
@@ -908,6 +886,7 @@ public class App extends JFrame implements ActionListener
                 {0, 21, 42,63},{3, 22, 41,60},{12, 25, 38,51},{15, 26, 37,48},
         };
 
+
         int[] gameBoard = new int[64];
         int counter = 0;
         for (int i = 0; i <= 3; i++)
@@ -924,6 +903,7 @@ public class App extends JFrame implements ActionListener
                 }
             }
         }
+
         for (int i = 0; i <= 75; i++)
         {
             counter = 0;
@@ -957,7 +937,7 @@ public class App extends JFrame implements ActionListener
 
     private void AI_game() 
     {
-        // Refactored computer plays code...
+        // Refactored AI plays code...
         int bestScore;
         int heuristicValue;
         ActionStep nextStep;
@@ -969,13 +949,12 @@ public class App extends JFrame implements ActionListener
             for (int i = 0; i <= 3; i++){
                 for (int j = 0; j <= 3; j++){
                     for(int k = 0; k <= 3; k++){
-                        if(setup[i][j][k] == '-'){//Creating a new move on every empty position
+                        if(setup[i][j][k] == '-'){
                             nextStep = new ActionStep();
                             nextStep.grid = i;
                             nextStep.row = j;
                             nextStep.column = k;
                             if(confirmVictory(AI_Pawn, nextStep)){
-                                //Leave the piece there if it is a win and end the game
                                 setup[i][j][k] = AI_Pawn;
                                 gameGrid[i][j][k].setPlayer(AI_Pawn);
                                 head0.setText("I won!");
@@ -1011,6 +990,7 @@ public class App extends JFrame implements ActionListener
                     }
                 }
             }
+
         if(!victory)
         {
             setup[bestScoreBoard][bestScoreRow][bestScoreColumn] = AI_Pawn;
@@ -1018,10 +998,13 @@ public class App extends JFrame implements ActionListener
             gameGrid[bestScoreBoard][bestScoreRow][bestScoreColumn].setEnabled(false);
         }
     }
+
+
     public void refreshScore()
     {
 	    score.setText("You: " + playerScore + "   Computer: " + AI_Score);
 	}
+
 
     public void deactivateBoard()
     {
@@ -1050,15 +1033,15 @@ public class App extends JFrame implements ActionListener
     public void clearBoard() {
         victory = false;
         playLevelCounter = 0;
-        victoryState = new int[4]; // Reset the victoryState array
+        victoryState = new int[4]; 
     
-        // Reset the setup array and board buttons
+        
         for (int i = 0; i < setup.length; i++) {
             for (int j = 0; j < setup[i].length; j++) {
                 for (int k = 0; k < setup[i][j].length; k++) {
                     setup[i][j][k] = '-';
-                    gameGrid[i][j][k].setPlayer('-'); // Reset to no player
-                    gameGrid[i][j][k].setEnabled(true); // Re-enable the button
+                    gameGrid[i][j][k].setPlayer('-'); 
+                    gameGrid[i][j][k].setEnabled(true);
                 }
             }
         }
